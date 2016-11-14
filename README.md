@@ -51,7 +51,7 @@ public class ABTestingActivity extends AppCompatActivity {
         ABTesting abTesting = application.getABTesting();
 
         // Apply changes for there current AB testing case
-        switch (abTesting.result(ABTestingConst.ABTESTING_EXAMPLE)) {
+        switch (abTesting.result("example")) {
             case "A":
                 textView.setText("(A) case");
                 break;
