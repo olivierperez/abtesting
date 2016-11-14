@@ -1,5 +1,9 @@
 # Android-ABTesting
 
+Android-ABTesting simplify the management of AB tests in your Android application.
+It is useful, for example, when you want to check if a new feature is appreciated by your users, you can give access to this new feature to a little part of users, the others will not see anything new.
+It can also be used when you can to propose 2 ways to access a new feature and you don't know what way will encourage more your user to use the feature.
+
 ## Usage
 
 ### Configure ABTesting cases
