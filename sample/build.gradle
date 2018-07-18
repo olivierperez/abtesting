@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion cCompileSdkVersion
@@ -16,10 +17,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$libs.support"
 
     implementation project(path: ':abtesting')
-    // Example: compile 'com.github.olivierperez:abtesting:0.1'
+    // Example: implementation 'com.github.olivierperez:abtesting:0.1'
 
     testImplementation 'junit:junit:4.12'
 }

@@ -17,7 +17,7 @@ public class ABTestingActivity extends AppCompatActivity {
 
         // Retrieve ABTest config
         ABTestingApplication application = (ABTestingApplication) getApplication();
-        ABTesting abTesting = application.getABTesting();
+        ABTesting abTesting = application.getAbTesting();
 
         // Apply changes for there current AB testing case
         switch (abTesting.result(ABTestingConst.ABTESTING_EXAMPLE)) {
