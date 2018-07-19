@@ -18,7 +18,9 @@ class ABPercentConfig internal constructor(private val name: String) {
     }
 
     internal fun result(store: ABStore): String {
-        val value = store.getInt(name, -1)
+        var value = store.getInt(name, -1)
+        value = if (value >= 0) value else init(store)
+
         for (aCase in cases) {
             if (aCase.matches(value)) {
                 return aCase.value()
@@ -27,12 +29,19 @@ class ABPercentConfig internal constructor(private val name: String) {
         return default
     }
 
-    internal fun init(store: ABStore) {
-        if (store.getInt(name, -1) == -1) {
-            val random = SecureRandom()
-            val value = random.nextInt(99)
+    private fun init(store: ABStore): Int {
+        val value = store.getInt(name, -1)
+        return when (value) {
+            -1 -> {
+                val random = SecureRandom()
+                val newValue = random.nextInt(99)
 
-            store.set(name, value)
+                store[name] = newValue
+                newValue
+            }
+            else -> {
+                value
+            }
         }
     }
 
