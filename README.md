@@ -18,14 +18,13 @@ public class ABTestingApplication extends Application {
         super.onCreate();
 
         // Configure ABTesting
-        abTesting = new ABTesting(this);
-
-        ABPercentConfig percent = abTesting.percent("example", "default");
-        percent.addCase(0, 20, "A");
-        percent.addCase(21, 40, "B");
-
-        // Init values
-        abTesting.init();
+        abTesting = abConfiguration(this) {
+            percentage("example") {
+                "A" isIn 1..20
+                "B" isIn 21..40
+                "default" isFor DefaultCase
+            }
+        }
     }
 
     public ABTesting getABTesting() {
