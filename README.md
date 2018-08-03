@@ -8,14 +8,14 @@ It can also be used when you can to propose 2 ways to access a new feature and y
 
 ### Configure ABTesting cases
 
-```java
-public class ABTestingApplication extends Application {
+```kotlin
+class ABTestingApplication : Application() {
 
-    private ABTesting abTesting;
+    lateinit var abTesting: ABTesting
+        private set
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    override fun onCreate() {
+        super.onCreate()
 
         // Configure ABTesting
         abTesting = abConfiguration(this) {
@@ -26,41 +26,35 @@ public class ABTestingApplication extends Application {
             }
         }
     }
-
-    public ABTesting getABTesting() {
-        return abTesting;
-    }
 }
 ```
 
 ### Take care of ABTesting case
 
-```java
-public class ABTestingActivity extends AppCompatActivity {
+```kotlin
+class ABTestingActivity : AppCompatActivity() {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ab_testing);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_ab_testing)
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-
-        // Retrieve ABTest config
-        ABTestingApplication application = (ABTestingApplication) getApplication();
-        ABTesting abTesting = application.getABTesting();
+        val textView = findViewById<TextView>(R.id.textView)
 
         // Apply changes for there current AB testing case
-        switch (abTesting.result("example")) {
-            case "A":
-                textView.setText("(A) case");
-                break;
-            case "B":
-                textView.setText("(B) case");
-                break;
-            default:
-                textView.setText("Default case");
-                break;
+        val app = application as ABTestingApplication
+        val abValue = app.abTesting.result(ABTestingConst.ABTESTING_EXAMPLE)
+        when (abValue) {
+            "A" -> {
+                textView.text = "(A) case"
+            }
+            "B" -> {
+                textView.text = "(B) case"
+            }
+            else -> {
+                textView.text = "Default case"
+            }
         }
+    }
     }
 }
 ```

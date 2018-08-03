@@ -26,4 +26,5 @@ class ABTesting(private val store: ABStore) {
         return configs[configName]?.result(store)
                 ?: throw IllegalArgumentException("AB configuration not found")
     }
+
 }
