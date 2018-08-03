@@ -10,12 +10,20 @@ class ABPercentConfig internal constructor(private val name: String) {
 
     private val cases: MutableList<ABPercentCase> = mutableListOf()
 
-    lateinit var default: String
+    private lateinit var defaultValue: String
 
     @AbTestingDsl
     infix fun String.isIn(range: IntRange) {
         cases.add(ABPercentCase(range.first, range.last, this))
     }
+
+    @AbTestingDsl
+    infix fun String.isFor(default: DefaultCase) {
+        defaultValue = this
+    }
+
+    @AbTestingDsl
+    object DefaultCase
 
     internal fun result(store: ABStore): String {
         var value = store.getInt(name, -1)
@@ -26,7 +34,7 @@ class ABPercentConfig internal constructor(private val name: String) {
                 return aCase.value()
             }
         }
-        return default
+        return defaultValue
     }
 
     private fun init(store: ABStore): Int {
