@@ -2,7 +2,7 @@ package fr.o80.app
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_ab_testing.*
 
 class ABTestingActivity : AppCompatActivity() {
 
@@ -10,10 +10,18 @@ class ABTestingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ab_testing)
 
-        val textView = findViewById<TextView>(R.id.textView)
-
-        // Apply changes for there current AB testing case
         val app = application as ABTestingApplication
+
+        loadABResult(app)
+
+        resetButton.setOnClickListener {
+            app.abTesting.reset(ABTestingConst.ABTESTING_EXAMPLE)
+            loadABResult(app)
+        }
+    }
+
+    fun loadABResult(app: ABTestingApplication) {
+        // Apply changes for there current AB testing case
         val abValue = app.abTesting.result(ABTestingConst.ABTESTING_EXAMPLE)
         when (abValue) {
             "A" -> {

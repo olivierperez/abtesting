@@ -11,6 +11,7 @@ class ABPercentConfig internal constructor(private val name: String) {
     private val cases: MutableList<ABPercentCase> = mutableListOf()
 
     private lateinit var defaultValue: String
+    object DefaultCase
 
     @AbTestingDsl
     infix fun String.isIn(range: IntRange) {
@@ -23,10 +24,9 @@ class ABPercentConfig internal constructor(private val name: String) {
     }
 
     @AbTestingDsl
-    object DefaultCase
 
     internal fun result(store: ABStore): String {
-        var value = store.getInt(name, -1)
+        var value = store.getInt(name, DEFAULT_VALUE)
         value = if (value >= 0) value else init(store)
 
         for (aCase in cases) {
@@ -38,9 +38,9 @@ class ABPercentConfig internal constructor(private val name: String) {
     }
 
     private fun init(store: ABStore): Int {
-        val value = store.getInt(name, -1)
+        val value = store.getInt(name, DEFAULT_VALUE)
         return when (value) {
-            -1 -> {
+            DEFAULT_VALUE -> {
                 val random = SecureRandom()
                 val newValue = random.nextInt(99)
 
@@ -51,6 +51,14 @@ class ABPercentConfig internal constructor(private val name: String) {
                 value
             }
         }
+    }
+
+    fun reset(store: ABStore) {
+        store[name] = DEFAULT_VALUE
+    }
+
+    companion object {
+        private const val DEFAULT_VALUE = -1
     }
 
 }

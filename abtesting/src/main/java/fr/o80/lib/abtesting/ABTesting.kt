@@ -27,4 +27,14 @@ class ABTesting(private val store: ABStore) {
                 ?: throw IllegalArgumentException("AB configuration not found")
     }
 
+    /**
+     * Reset the value of the given test for the current user.
+     *
+     * @param configName Name of the test
+     */
+    fun reset(configName: String) {
+        return configs[configName]?.reset(store)
+                ?: throw IllegalArgumentException("AB configuration not found")
+    }
+
 }
